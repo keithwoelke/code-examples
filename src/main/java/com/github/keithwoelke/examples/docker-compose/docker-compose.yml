@@ -1,0 +1,22 @@
+version: "2"
+services:
+  service_1:
+    image: base_image_1
+    container_name: container_name_1
+    ports:
+      - 8080:8080
+    depends_on:
+      - mock_service_2
+  mock_service_2:
+    image: wiremock-base:latest
+    container_name: mock_service_2
+    command: --root-dir=/wiremock/stubs/mock_service_2/
+    ports:
+      - 80
+    volumes_from:
+      - wiremock-stubs:ro
+    depends_on:
+      - wiremock-stubs
+  wiremock-stubs:
+    image: wiremock-stubs:develop.latest
+    container_name: wiremock-stubs
